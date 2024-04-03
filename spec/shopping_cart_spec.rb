@@ -5,11 +5,11 @@ require_relative '../shopping_cart'
 RSpec.describe '.total_price' do
   subject { cart.total_price }
   let(:cart) { ShoppingCart.new }
-  let(:book_1) { Book.new(title: 'Harry Potter and the Sorcerer’s Stone') }
-  let(:book_2) { Book.new(title: 'Harry Potter and the Chamber of Secrets') }
-  let(:book_3) { Book.new(title: 'Harry Potter and the Prisoner of Azkaban') }
-  let(:book_4) { Book.new(title: 'Harry Potter and the Goblet of Fire') }
-  let(:book_5) { Book.new(title: 'Harry Potter and the Order of the Phoenix ') }
+  let(:book_1) { Book.new(title: '1') }
+  let(:book_2) { Book.new(title: '2') }
+  let(:book_3) { Book.new(title: '3') }
+  let(:book_4) { Book.new(title: '4') }
+  let(:book_5) { Book.new(title: '5') }
   context 'Only one book in the basket' do
     before do
       cart.add_book(book_1)
@@ -101,6 +101,7 @@ RSpec.describe '.total_price' do
         expect(subject).to eq(28.8)
       end
     end
+
     context 'two differents books' do
       before do
         cart.add_book(book_1)
@@ -112,6 +113,33 @@ RSpec.describe '.total_price' do
         expect(subject).to eq(30.4)
       end
     end
+
+    context 'two same book in the basket' do
+      before do
+        cart.add_book(book_1)
+        cart.add_book(book_1)
+        cart.add_book(book_2)
+        cart.add_book(book_2)
+      end
+
+      it 'should apply 5%' do
+        expect(subject).to eq(30.4)
+      end
+    end
+
+    context 'two same book and two different' do
+      before do
+        cart.add_book(book_1)
+        cart.add_book(book_1)
+        cart.add_book(book_2)
+        cart.add_book(book_3)
+      end
+
+      it 'should aplply 20%' do
+        expect(subject).to eq(28.8)
+      end
+    end
+
     context 'no differents books' do
       before do
         cart.add_book(book_1)
